@@ -1,3 +1,9 @@
+/*
+ * Some simple clipboard-like char device driver
+ * to show how write works.
+ *
+ * GPL applies: you know what that means.
+ */
 
 #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
 
@@ -29,13 +35,16 @@ static ssize_t clip_write(struct file *file, const char __user *buf,
 {
 	pr_info("user wants to write %d bytes at %lld\n", count, *offset);
 
-	/* Allocate some buffer */
+	/* Allocate a buffer to accomodate the user write request */
 	clip->buffer = kmalloc(count, GFP_KERNEL);
 	clip->count = count;
 
-	/* Write data */
 	return simple_write_to_buffer(clip->buffer, clip->count, offset,
 				      buf, count);
+	/*
+	 * Wait! what happened to the previously allocated buffer
+	 * on the next write? (cough.. cough.. leak!)
+	 */
 }
 
 static struct file_operations fops = {
@@ -73,7 +82,7 @@ static void clip_exit(void)
 
 	/*
 	 * Is it correct to free structure before the unregistering
-	 * the char device: does the word 'preemption' says anything to you?
+	 * the char device? Maybe the word 'preemption' says anything to you...
 	 */
 
         return unregister_chrdev(major, KBUILD_MODNAME);
@@ -81,3 +90,7 @@ static void clip_exit(void)
 
 module_init(clip_init);
 module_exit(clip_exit);
+
+MODULE_AUTHOR("Ezequiel Garcia");
+MODULE_DESCRIPTION("Writable char device driver");
+MODULE_LICENSE("GPL");

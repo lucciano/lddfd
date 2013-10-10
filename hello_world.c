@@ -25,12 +25,11 @@ module_exit(hello_exit);
 MODULE_AUTHOR("Ezequiel Garcia");
 MODULE_DESCRIPTION("Typical Hello World! first example");
 
-/* ---------------------------------------------------- */
 /*
  * Uncomment the code below to prevent a kernel taint upon module loading.
  * Needless to say, a kernel taint is something bad and only developers with
  * crappy jobs at closed source companies get them :-)
  */
-#if 1
+#if 0
 MODULE_LICENSE("GPL");
 #endif

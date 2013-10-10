@@ -1,3 +1,8 @@
+/*
+ * Yoda's char device driver
+ *
+ * GPL applies: you know what that means.
+ */
 
 #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
 
@@ -36,7 +41,7 @@ static ssize_t yoda_read_works(struct file *file, char __user *buf,
 	if (copy_to_user(buf, yoda_string, to_read))
 		return -EFAULT;
 
-	/* Update offset */
+	/* Update user offset */
 	*offset += to_read;
 
         return to_read;
@@ -56,6 +61,11 @@ static ssize_t yoda_read_buggy(struct file *file, char __user *buf,
 
 static struct file_operations fops = {
 	.read = yoda_read_works,
+
+	/*
+	 * No write function!
+	 * What happens if you write to this device?
+	 */
 };
 
 static int yoda_init(void)
@@ -75,3 +85,7 @@ static void yoda_exit(void)
 
 module_init(yoda_init);
 module_exit(yoda_exit);
+
+MODULE_AUTHOR("Ezequiel Garcia");
+MODULE_DESCRIPTION("A simple read-only char device driver");
+MODULE_LICENSE("GPL");

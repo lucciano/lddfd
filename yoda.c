@@ -1,6 +1,8 @@
 /*
  * Yoda's char device driver
  *
+ * Copyright (C) 2013 Ezequiel Garcia.
+ *
  * GPL applies: you know what that means.
  */
 

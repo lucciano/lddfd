@@ -2,6 +2,8 @@
  * Some simple clipboard-like char device driver
  * to show how write works.
  *
+ * Copyright (C) 2013 Ezequiel Garcia.
+ *
  * GPL applies: you know what that means.
  */
 

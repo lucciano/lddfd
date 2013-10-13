@@ -1,3 +1,9 @@
+/*
+ * Copyright (C) 2013 Ezequiel Garcia.
+ *
+ * GPL... but who cares, it's just a Hello World!
+ */
+
 /* Nice standarization trick. Must be *before* headers to take effect. */
 #if 1
 #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt

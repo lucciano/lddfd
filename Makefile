@@ -1,4 +1,4 @@
-obj-m += hello_world.o yoda.o clip.o
+obj-m += hello_world.o yoda.o clip.o fifo.o
 
 all:
 	make -C /lib/modules/$(shell uname -r)/build M=$(shell pwd) modules

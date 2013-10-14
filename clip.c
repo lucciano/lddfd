@@ -48,7 +48,7 @@ static ssize_t clip_write(struct file *file, const char __user *buf,
 	 */
 }
 
-static struct file_operations fops = {
+static const struct file_operations fops = {
 	.read = clip_read,
 	.write = clip_write,
 };
@@ -69,12 +69,12 @@ static int clip_init(void)
 	if (!clip)
 		return -ENOMEM;
 
-        major = register_chrdev(0, KBUILD_MODNAME, &fops);
-        if (major < 0)
-                return major;
+	major = register_chrdev(0, KBUILD_MODNAME, &fops);
+	if (major < 0)
+		return major;
 	pr_info("device registered with major %d\n", major);
 
-        return 0;
+	return 0;
 }
 
 static void clip_exit(void)
@@ -85,8 +85,7 @@ static void clip_exit(void)
 	 * Is it correct to free structure before the unregistering
 	 * the char device? Maybe the word 'preemption' says anything to you...
 	 */
-
-        return unregister_chrdev(major, KBUILD_MODNAME);
+	return unregister_chrdev(major, KBUILD_MODNAME);
 }
 
 module_init(clip_init);

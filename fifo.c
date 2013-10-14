@@ -62,8 +62,9 @@ static ssize_t fifo_read(struct file *file, char __user *buf,
 
 	if (!found)
 		/*
-		 * EFAULT is a very-very generic and completely unhelpful error code.
-		 * Come on, be nicer to the poor souls that will use this driver!
+		 * EFAULT is a very-very generic and completely unhelpful
+		 * error code. Come on, be nicer to the poor souls that
+		 * will use this driver!
 		 */
 		return -EFAULT;
 
@@ -109,7 +110,7 @@ static ssize_t fifo_write(struct file *file, const char __user *buf,
 	return ret;
 }
 
-static struct file_operations fops = {
+static const struct file_operations fops = {
 	.read = fifo_read,
 	.write = fifo_write,
 };
@@ -118,12 +119,12 @@ static int fifo_init(void)
 {
 	INIT_LIST_HEAD(&fifo_list);
 
-        major = register_chrdev(0, KBUILD_MODNAME, &fops);
-        if (major < 0)
-                return major;
-	pr_info("device registered with major %d\n", major);
+	major = register_chrdev(0, KBUILD_MODNAME, &fops);
+	if (major < 0)
+		return major;
 
-        return 0;
+	pr_info("device registered with major %d\n", major);
+	return 0;
 }
 
 static void fifo_exit(void)

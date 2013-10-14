@@ -46,7 +46,7 @@ static ssize_t yoda_read_works(struct file *file, char __user *buf,
 	/* Update user offset */
 	*offset += to_read;
 
-        return to_read;
+	return to_read;
 }
 
 static ssize_t yoda_read_buggy(struct file *file, char __user *buf,
@@ -58,10 +58,10 @@ static ssize_t yoda_read_buggy(struct file *file, char __user *buf,
 
 	if (copy_to_user(buf, yoda_string, strlen(yoda_string)))
 		return -EFAULT;
-        return strlen(yoda_string);
+	return strlen(yoda_string);
 }
 
-static struct file_operations fops = {
+static const struct file_operations fops = {
 	.read = yoda_read_works,
 
 	/*
@@ -72,17 +72,17 @@ static struct file_operations fops = {
 
 static int yoda_init(void)
 {
-        major = register_chrdev(0, KBUILD_MODNAME, &fops);
-        if (major < 0)
-                return major;
-	pr_info("device registered with major %d\n", major);
+	major = register_chrdev(0, KBUILD_MODNAME, &fops);
+	if (major < 0)
+		return major;
 
-        return 0;
+	pr_info("device registered with major %d\n", major);
+	return 0;
 }
 
 static void yoda_exit(void)
 {
-        return unregister_chrdev(major, KBUILD_MODNAME);
+	return unregister_chrdev(major, KBUILD_MODNAME);
 }
 
 module_init(yoda_init);

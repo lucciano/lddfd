@@ -15,40 +15,6 @@
 
 static int major;
 
-static ssize_t yoda_read_superb(struct file *file, char __user *buf,
-				size_t count, loff_t *offset)
-{
-	const char *yoda_string = "Elegant ways, Linux has.\n";
-
-	pr_info("user wants to read %d bytes at %lld\n", count, *offset);
-
-	return simple_read_from_buffer(buf, count, offset,
-				       yoda_string, strlen(yoda_string));
-}
-
-static ssize_t yoda_read_works(struct file *file, char __user *buf,
-			       size_t count, loff_t *offset)
-{
-	const char *yoda_string = "Completely fixed, this string is.\n";
-	size_t to_read, yoda_size = strlen(yoda_string);
-
-	pr_info("user wants to read %d bytes at %lld\n", count, *offset);
-
-	/* Little hack to detect non-first readings */
-	if (*offset > 0)
-		return 0;
-
-	to_read = count < yoda_size ? count : yoda_size;
-
-	if (copy_to_user(buf, yoda_string, to_read))
-		return -EFAULT;
-
-	/* Update user offset */
-	*offset += to_read;
-
-	return to_read;
-}
-
 static ssize_t yoda_read_buggy(struct file *file, char __user *buf,
 			       size_t count, loff_t *offset)
 {
@@ -62,7 +28,7 @@ static ssize_t yoda_read_buggy(struct file *file, char __user *buf,
 }
 
 static const struct file_operations fops = {
-	.read = yoda_read_works,
+	.read = yoda_read_buggy,
 
 	/*
 	 * No write function!
